@@ -34,7 +34,11 @@ public class PostService {
 
         if (savedPost == null) return null;
 
-        return postRepository.save(post);
+        savedPost.setTitle(post.getTitle());
+        savedPost.setSlug(slug);
+        savedPost.setBody(post.getBody());
+
+        return postRepository.save(savedPost);
     }
 
     public Boolean deletePostBySlug(Integer id) {
