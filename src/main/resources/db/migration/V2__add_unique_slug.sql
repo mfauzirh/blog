@@ -1,0 +1,1 @@
+ALTER TABLE posts ADD UNIQUE post_slug_unique(slug);
