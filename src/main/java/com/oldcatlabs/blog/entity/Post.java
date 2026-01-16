@@ -1,25 +1,23 @@
 package com.oldcatlabs.blog.entity;
 
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
+@Entity
 public class Post {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String title;
     private String body;
+
+    @Column(unique = true)
     private String slug;
     private boolean isPublished;
     private boolean isDeleted;
-    private Integer createdAt;
-    private Integer publishedAt;
-
-    public Post() {}
-
-    public Post(Integer id, String title, String slug) {
-        this.id = id;
-        this.title = title;
-        this.slug = slug;
-    }
+    private Long createdAt;
+    private Long publishedAt;
 
 }
