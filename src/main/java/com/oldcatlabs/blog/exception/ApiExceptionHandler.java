@@ -11,12 +11,13 @@ import java.util.List;
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
+    @SuppressWarnings("unused")
     @ExceptionHandler(ApiException.class)
     public ResponseEntity<ApiExceptionResponse> handlerApiException(ApiException e) {
         List<String> errorMessages = new ArrayList<>(Collections.singletonList(e.getMessage()));
         ApiExceptionResponse response = ApiExceptionResponse.builder()
                 .errorMessages(errorMessages)
-                .build();;
+                .build();
         return ResponseEntity.status(e.getHttpStatus()).body(response);
     }
 
