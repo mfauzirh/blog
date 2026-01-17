@@ -41,7 +41,7 @@ public class PostService {
         return postRepository.save(savedPost);
     }
 
-    public Boolean deletePostBySlug(Integer id) {
+    public Boolean deletePostById(Integer id) {
         Post savedPost = postRepository.findById(id).orElse(null);
 
         if (savedPost == null) return false;
