@@ -27,4 +27,5 @@ public class Post {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "post", orphanRemoval = true)
     private List<Comment> comments;
 
+    private int commentCount;
 }

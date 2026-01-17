@@ -4,6 +4,7 @@ import com.oldcatlabs.blog.entity.Comment;
 import com.oldcatlabs.blog.entity.Post;
 import com.oldcatlabs.blog.repository.CommentRepository;
 import com.oldcatlabs.blog.repository.PostRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.domain.PageRequest;
@@ -33,12 +34,18 @@ public class CommentService {
         return commentRepository.findById(id).orElse(null);
     }
 
+    @Transactional
     public Comment createComment(Integer id, Comment comment) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("post not found"));
 
         comment.setCreatedAt(Instant.now().getEpochSecond());
         comment.setPost(post);
-        return commentRepository.save(comment);
+        comment = commentRepository.save(comment);
+
+        post.setCommentCount(post.getCommentCount() + 1);
+        postRepository.save(post);
+
+        return comment;
     }
 }
