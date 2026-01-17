@@ -2,7 +2,8 @@ package com.oldcatlabs.blog.controller;
 
 import com.oldcatlabs.blog.entity.Post;
 import com.oldcatlabs.blog.request.CreatePostRequest;
-import com.oldcatlabs.blog.response.CreatePostResponse;
+import com.oldcatlabs.blog.request.UpdatePostRequest;
+import com.oldcatlabs.blog.response.PostResponse;
 import com.oldcatlabs.blog.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,23 +19,23 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping
-    public List<Post> getPosts() {
+    public List<PostResponse> getPosts() {
         return postService.getPosts();
     }
 
     @GetMapping("/{slug}")
-    public Post getPostBySlug(@PathVariable String slug) {
+    public PostResponse getPostBySlug(@PathVariable String slug) {
         return postService.getPostBySlug(slug);
     }
 
     @PostMapping
-    public CreatePostResponse createPost(@Valid @RequestBody CreatePostRequest request) {
+    public PostResponse createPost(@Valid @RequestBody CreatePostRequest request) {
         return postService.createPost(request);
     }
 
     @PutMapping("/{slug}")
-    public Post updatePostBySlug(@PathVariable String slug, @RequestBody Post post) {
-        return postService.updatePostBySlug(slug, post);
+    public PostResponse updatePostBySlug(@PathVariable String slug, @RequestBody UpdatePostRequest request) {
+        return postService.updatePostBySlug(slug, request);
     }
 
     @DeleteMapping("/{id}")
@@ -43,7 +44,7 @@ public class PostController {
     }
 
     @PostMapping("/{id}/publish")
-    public Post publishPostById(@PathVariable Integer id) {
+    public PostResponse publishPostById(@PathVariable Integer id) {
         return postService.publishPostById(id);
     }
 

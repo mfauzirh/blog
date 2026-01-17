@@ -6,15 +6,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class CreatePostResponse {
+@NoArgsConstructor
+@Builder
+public class PostResponse {
 
+    private Integer id;
     private String title;
     private String body;
     private String slug;
+    private boolean isPublished;
+    private Long createdAt;
     private Long publishedAt;
-    private Integer commentCount;
+    private Long updatedAt;
+    private int commentCount;
 
 }

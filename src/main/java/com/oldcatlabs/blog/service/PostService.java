@@ -4,7 +4,8 @@ import com.oldcatlabs.blog.entity.Post;
 import com.oldcatlabs.blog.mapper.PostMapper;
 import com.oldcatlabs.blog.repository.PostRepository;
 import com.oldcatlabs.blog.request.CreatePostRequest;
-import com.oldcatlabs.blog.response.CreatePostResponse;
+import com.oldcatlabs.blog.request.UpdatePostRequest;
+import com.oldcatlabs.blog.response.PostResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,36 +18,41 @@ public class PostService {
 
     private final PostRepository postRepository;
 
-    public List<Post> getPosts() {
-        return postRepository.findAllByIsDeleted(false);
+    public List<PostResponse> getPosts() {
+        List<Post> posts = postRepository.findAllByIsDeleted(false);
+        return PostMapper.INSTANCE.toPostResponses(posts);
     }
 
-    public Post getPostBySlug(String slug) {
-        return postRepository
+    public PostResponse getPostBySlug(String slug) {
+        Post post= postRepository
                 .findFirstBySlugAndIsDeleted(slug, false)
                 .orElse(null);
+
+        return PostMapper.INSTANCE.toPostResponse(post);
     }
 
-    public CreatePostResponse createPost(CreatePostRequest request) {
+    public PostResponse createPost(CreatePostRequest request) {
         Post post = PostMapper.INSTANCE.fromCreatePostRequest(request);
 
         post.setCreatedAt(Instant.now().getEpochSecond());
         post = postRepository.save(post);
 
-        return PostMapper.INSTANCE.toCreatePostResponse(post);
+        return PostMapper.INSTANCE.toPostResponse(post);
     }
 
-    public Post updatePostBySlug(String slug, Post post) {
+    public PostResponse updatePostBySlug(String slug, UpdatePostRequest request) {
         Post savedPost = postRepository.findFirstBySlugAndIsDeleted(slug, false).orElse(null);
 
         if (savedPost == null) return null;
 
-        savedPost.setTitle(post.getTitle());
-        savedPost.setSlug(slug);
-        savedPost.setBody(post.getBody());
+        savedPost.setTitle(request.getTitle());
+        savedPost.setSlug(request.getSlug());
+        savedPost.setBody(request.getBody());
         savedPost.setUpdatedAt(Instant.now().getEpochSecond());
 
-        return postRepository.save(savedPost);
+        savedPost = postRepository.save(savedPost);
+
+        return PostMapper.INSTANCE.toPostResponse(savedPost);
     }
 
     public Boolean deletePostById(Integer id) {
@@ -60,7 +66,7 @@ public class PostService {
         return true;
     }
 
-    public Post publishPostById(Integer id) {
+    public PostResponse publishPostById(Integer id) {
         Post savedPost = postRepository.findById(id).orElse(null);
 
         if (savedPost == null) return null;
@@ -68,6 +74,8 @@ public class PostService {
         savedPost.setPublished(true);
         savedPost.setPublishedAt(Instant.now().getEpochSecond());
         savedPost.setUpdatedAt(Instant.now().getEpochSecond());
-        return postRepository.save(savedPost);
+        savedPost = postRepository.save(savedPost);
+
+        return PostMapper.INSTANCE.toPostResponse(savedPost);
     }
 }
