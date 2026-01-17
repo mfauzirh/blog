@@ -45,9 +45,8 @@ public class PostService {
     }
 
     public PostResponse updatePostBySlug(String slug, UpdatePostRequest request) {
-        Post savedPost = postRepository.findFirstBySlugAndIsDeleted(slug, false).orElse(null);
-
-        if (savedPost == null) return null;
+        Post savedPost = postRepository.findFirstBySlugAndIsDeleted(slug, false)
+                .orElseThrow(() -> new ApiException("post not found", HttpStatus.NOT_FOUND));
 
         savedPost.setTitle(request.getTitle());
         savedPost.setSlug(request.getSlug());
@@ -61,8 +60,8 @@ public class PostService {
 
     public Boolean deletePostById(Integer id) {
 
-        Post savedPost = postRepository.findById(id).orElse(null);
-        if (savedPost == null) return false;
+        Post savedPost = postRepository.findById(id)
+                .orElseThrow(() -> new ApiException("post not found", HttpStatus.NOT_FOUND));
 
         savedPost.setDeleted(true);
         savedPost.setUpdatedAt(Instant.now().getEpochSecond());
@@ -71,9 +70,8 @@ public class PostService {
     }
 
     public PostResponse publishPostById(Integer id) {
-        Post savedPost = postRepository.findById(id).orElse(null);
-
-        if (savedPost == null) return null;
+        Post savedPost = postRepository.findById(id)
+                .orElseThrow(() -> new ApiException("post not found", HttpStatus.NOT_FOUND));
 
         savedPost.setPublished(true);
         savedPost.setPublishedAt(Instant.now().getEpochSecond());
