@@ -1,31 +1,34 @@
 package com.oldcatlabs.blog.controller;
 
 import com.oldcatlabs.blog.entity.Comment;
+import com.oldcatlabs.blog.service.CommentService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
+@RequiredArgsConstructor
 public class CommentController {
 
-    @GetMapping("/posts/{slug}/comments")
-    public List<Comment> getComments(
-            @PathVariable String postSlug, @RequestParam Integer page, @RequestParam Integer limit) {
-        List<Comment> comments = new ArrayList<>();
+    private final CommentService commentService;
 
-        return comments;
+    @GetMapping("/posts/{slug}/comments")
+    public List<Comment> getCommentsByPostSlug(
+            @PathVariable String postSlug, @RequestParam Integer page, @RequestParam Integer limit) {
+
+        return commentService.getCommentsByPostSlug(postSlug, page, limit);
     }
 
     @GetMapping("/{id}")
     public Comment getCommentById(@PathVariable Integer id) {
-        return new Comment();
+        return commentService.getCommentById(id);
     }
 
     @PostMapping("/posts/{id}/comments")
     public Comment createComment(@PathVariable Integer id, @RequestBody Comment comment) {
-        return comment;
+        return commentService.createComment(id, comment);
     }
 
 }
