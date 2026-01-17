@@ -1,6 +1,7 @@
 package com.oldcatlabs.blog.controller;
 
-import com.oldcatlabs.blog.entity.Comment;
+import com.oldcatlabs.blog.request.CreateCommentRequest;
+import com.oldcatlabs.blog.response.CommentResponse;
 import com.oldcatlabs.blog.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,20 +16,20 @@ public class CommentController {
     private final CommentService commentService;
 
     @GetMapping("/posts/{slug}/comments")
-    public List<Comment> getCommentsByPostSlug(
+    public List<CommentResponse> getCommentsByPostSlug(
             @PathVariable String slug, @RequestParam Integer page, @RequestParam Integer limit) {
 
         return commentService.getCommentsByPostSlug(slug, page, limit);
     }
 
     @GetMapping("/comments/{id}")
-    public Comment getCommentById(@PathVariable Integer id) {
+    public CommentResponse getCommentById(@PathVariable Integer id) {
         return commentService.getCommentById(id);
     }
 
     @PostMapping("/posts/{id}/comments")
-    public Comment createComment(@PathVariable Integer id, @RequestBody Comment comment) {
-        return commentService.createComment(id, comment);
+    public CommentResponse createComment(@PathVariable Integer id, @RequestBody CreateCommentRequest request) {
+        return commentService.createComment(id, request);
     }
 
 }

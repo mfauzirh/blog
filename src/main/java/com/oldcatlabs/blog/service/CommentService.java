@@ -2,8 +2,11 @@ package com.oldcatlabs.blog.service;
 
 import com.oldcatlabs.blog.entity.Comment;
 import com.oldcatlabs.blog.entity.Post;
+import com.oldcatlabs.blog.mapper.CommentMapper;
 import com.oldcatlabs.blog.repository.CommentRepository;
 import com.oldcatlabs.blog.repository.PostRepository;
+import com.oldcatlabs.blog.request.CreateCommentRequest;
+import com.oldcatlabs.blog.response.CommentResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -19,23 +22,30 @@ public class CommentService {
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
 
-    public List<Comment> getCommentsByPostSlug(String slug, Integer page, Integer limit) {
+    public List<CommentResponse> getCommentsByPostSlug(String slug, Integer page, Integer limit) {
         Post post = postRepository.findFirstBySlugAndIsDeleted(slug, false)
                 .orElseThrow(() -> new RuntimeException("post not found"));
 
         PageRequest pageRequest = PageRequest.of(page, limit);
 
-        return commentRepository.findByPostId(post.getId(), pageRequest).getContent();
+        List<Comment> comments = commentRepository.findByPostId(post.getId(), pageRequest).getContent();
+
+        return CommentMapper.INSTANCE.toCommentResponseList(comments);
     }
 
-    public Comment getCommentById(Integer id) {
-        return commentRepository.findById(id).orElse(null);
+    public CommentResponse getCommentById(Integer id) {
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("comment not found"));
+
+        return CommentMapper.INSTANCE.toCommentResponse(comment);
     }
 
     @Transactional
-    public Comment createComment(Integer id, Comment comment) {
+    public CommentResponse createComment(Integer id, CreateCommentRequest createCommentRequest) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("post not found"));
+
+        Comment comment = CommentMapper.INSTANCE.fromCreateCommentRequest(createCommentRequest);
 
         comment.setCreatedAt(Instant.now().getEpochSecond());
         comment.setPost(post);
@@ -44,6 +54,6 @@ public class CommentService {
         post.setCommentCount(post.getCommentCount() + 1);
         postRepository.save(post);
 
-        return comment;
+        return CommentMapper.INSTANCE.toCommentResponse(comment);
     }
 }
