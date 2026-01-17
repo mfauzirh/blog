@@ -1,6 +1,5 @@
 package com.oldcatlabs.blog.controller;
 
-import com.oldcatlabs.blog.entity.Post;
 import com.oldcatlabs.blog.request.CreatePostRequest;
 import com.oldcatlabs.blog.request.UpdatePostRequest;
 import com.oldcatlabs.blog.response.PostResponse;
