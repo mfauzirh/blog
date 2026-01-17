@@ -16,12 +16,12 @@ public class CommentController {
 
     @GetMapping("/posts/{slug}/comments")
     public List<Comment> getCommentsByPostSlug(
-            @PathVariable String postSlug, @RequestParam Integer page, @RequestParam Integer limit) {
+            @PathVariable String slug, @RequestParam Integer page, @RequestParam Integer limit) {
 
-        return commentService.getCommentsByPostSlug(postSlug, page, limit);
+        return commentService.getCommentsByPostSlug(slug, page, limit);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/comments/{id}")
     public Comment getCommentById(@PathVariable Integer id) {
         return commentService.getCommentById(id);
     }

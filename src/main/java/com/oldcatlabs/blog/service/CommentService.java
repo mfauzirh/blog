@@ -1,25 +1,44 @@
 package com.oldcatlabs.blog.service;
 
 import com.oldcatlabs.blog.entity.Comment;
+import com.oldcatlabs.blog.entity.Post;
+import com.oldcatlabs.blog.repository.CommentRepository;
+import com.oldcatlabs.blog.repository.PostRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CommentService {
 
-    public List<Comment> getCommentsByPostSlug(String slug, Integer page, Integer limit) {
-        List<Comment> comments = new ArrayList<>();
+    private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
 
-        return comments;
+    public List<Comment> getCommentsByPostSlug(String slug, Integer page, Integer limit) {
+        Post post = postRepository.findFirstBySlugAndIsDeleted(slug, false)
+                .orElseThrow(() -> new RuntimeException("post not found"));
+
+        PageRequest pageRequest = PageRequest.of(page, limit);
+
+        return commentRepository.findByPostId(post.getId(), pageRequest).getContent();
     }
 
     public Comment getCommentById(Integer id) {
-        return new Comment();
+        return commentRepository.findById(id).orElse(null);
     }
 
     public Comment createComment(Integer id, Comment comment) {
-        return comment;
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("post not found"));
+
+        comment.setCreatedAt(Instant.now().getEpochSecond());
+        comment.setPost(post);
+        return commentRepository.save(comment);
     }
 }

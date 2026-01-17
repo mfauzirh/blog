@@ -3,6 +3,8 @@ package com.oldcatlabs.blog.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Entity
 @Table(name = "posts")
@@ -21,5 +23,8 @@ public class Post {
     private Long createdAt;
     private Long publishedAt;
     private Long updatedAt;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post", orphanRemoval = true)
+    private List<Comment> comments;
 
 }
