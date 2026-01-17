@@ -18,8 +18,9 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping
-    public List<PostResponse> getPosts() {
-        return postService.getPosts();
+    public List<PostResponse> getPosts(
+            @RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "10") Integer limit) {
+        return postService.getPosts(page, limit);
     }
 
     @GetMapping("/{slug}")

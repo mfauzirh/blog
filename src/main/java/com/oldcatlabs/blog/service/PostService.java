@@ -7,6 +7,7 @@ import com.oldcatlabs.blog.request.CreatePostRequest;
 import com.oldcatlabs.blog.request.UpdatePostRequest;
 import com.oldcatlabs.blog.response.PostResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -18,8 +19,9 @@ public class PostService {
 
     private final PostRepository postRepository;
 
-    public List<PostResponse> getPosts() {
-        List<Post> posts = postRepository.findAllByIsDeleted(false);
+    public List<PostResponse> getPosts(Integer page, Integer limit) {
+        PageRequest pageRequest = PageRequest.of(page, limit);
+        List<Post> posts = postRepository.findAllByIsDeleted(false, pageRequest).getContent();
         return PostMapper.INSTANCE.toPostResponses(posts);
     }
 
