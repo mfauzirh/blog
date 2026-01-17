@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class CommentResponse {
 
     private Integer id;
@@ -16,6 +15,16 @@ public class CommentResponse {
     private String email;
     private String body;
     private Long createdAt;
-    private Integer postId;
+
+    private Post post;
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Post {
+        private String id;
+        private String title;
+        private String slug;
+    }
 
 }

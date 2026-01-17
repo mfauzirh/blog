@@ -1,24 +1,26 @@
-package com.oldcatlabs.blog.mapper;
+    package com.oldcatlabs.blog.mapper;
 
-import com.oldcatlabs.blog.entity.Comment;
-import com.oldcatlabs.blog.request.CreateCommentRequest;
-import com.oldcatlabs.blog.response.CommentResponse;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
+    import com.oldcatlabs.blog.entity.Comment;
+    import com.oldcatlabs.blog.request.CreateCommentRequest;
+    import com.oldcatlabs.blog.response.CommentResponse;
+    import org.mapstruct.Mapper;
+    import org.mapstruct.Mapping;
+    import org.mapstruct.factory.Mappers;
 
-import java.util.List;
+    import java.util.List;
 
-@Mapper
-public interface CommentMapper {
+    @Mapper
+    public interface CommentMapper {
 
-    CommentMapper INSTANCE =  Mappers.getMapper(CommentMapper.class);
+        CommentMapper INSTANCE =  Mappers.getMapper(CommentMapper.class);
 
-    Comment fromCreateCommentRequest(CreateCommentRequest createCommentRequest);
+        Comment fromCreateCommentRequest(CreateCommentRequest createCommentRequest);
 
-    @Mapping(source = "post.id", target = "postId")
-    CommentResponse toCommentResponse(Comment comment);
+        @Mapping(source = "post.id", target = "post.id")
+        @Mapping(source = "post.title", target = "post.title")
+        @Mapping(source = "post.slug", target = "post.slug")
+        CommentResponse toCommentResponse(Comment comment);
 
-    List<CommentResponse> toCommentResponseList(List<Comment> comments);
+        List<CommentResponse> toCommentResponseList(List<Comment> comments);
 
-}
+    }
