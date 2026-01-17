@@ -1,0 +1,20 @@
+package com.oldcatlabs.blog.response;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class CreatePostResponse {
+
+    private String title;
+    private String body;
+    private String slug;
+    private Long publishedAt;
+    private Integer commentCount;
+
+}

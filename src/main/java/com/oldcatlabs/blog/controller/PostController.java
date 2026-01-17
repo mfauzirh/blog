@@ -1,7 +1,10 @@
 package com.oldcatlabs.blog.controller;
 
 import com.oldcatlabs.blog.entity.Post;
+import com.oldcatlabs.blog.request.CreatePostRequest;
+import com.oldcatlabs.blog.response.CreatePostResponse;
 import com.oldcatlabs.blog.service.PostService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,8 +28,8 @@ public class PostController {
     }
 
     @PostMapping
-    public Post createPost(@RequestBody Post post) {
-        return postService.createPost(post);
+    public CreatePostResponse createPost(@Valid @RequestBody CreatePostRequest request) {
+        return postService.createPost(request);
     }
 
     @PutMapping("/{slug}")

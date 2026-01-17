@@ -2,6 +2,8 @@ package com.oldcatlabs.blog.service;
 
 import com.oldcatlabs.blog.entity.Post;
 import com.oldcatlabs.blog.repository.PostRepository;
+import com.oldcatlabs.blog.request.CreatePostRequest;
+import com.oldcatlabs.blog.response.CreatePostResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,9 +26,23 @@ public class PostService {
                 .orElse(null);
     }
 
-    public Post createPost(Post post) {
+    public CreatePostResponse createPost(CreatePostRequest request) {
+        Post post = new Post();
+        post.setTitle(request.getTitle());
+        post.setBody(request.getBody());
+        post.setSlug(request.getSlug());
+
         post.setCreatedAt(Instant.now().getEpochSecond());
-        return postRepository.save(post);
+        post = postRepository.save(post);
+
+        CreatePostResponse response = new CreatePostResponse();
+        response.setTitle(post.getTitle());
+        response.setBody(post.getBody());
+        response.setSlug(post.getSlug());
+        response.setPublishedAt(post.getCreatedAt());
+        response.setCommentCount(post.getCommentCount());
+
+        return response;
     }
 
     public Post updatePostBySlug(String slug, Post post) {
