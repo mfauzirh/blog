@@ -17,7 +17,9 @@ public class CommentController {
 
     @GetMapping("/posts/{slug}/comments")
     public List<CommentResponse> getCommentsByPostSlug(
-            @PathVariable String slug, @RequestParam Integer page, @RequestParam Integer limit) {
+            @PathVariable String slug,
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "10") Integer limit) {
 
         return commentService.getCommentsByPostSlug(slug, page, limit);
     }
