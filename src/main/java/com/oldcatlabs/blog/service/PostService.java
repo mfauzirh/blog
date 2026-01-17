@@ -1,6 +1,7 @@
 package com.oldcatlabs.blog.service;
 
 import com.oldcatlabs.blog.entity.Post;
+import com.oldcatlabs.blog.mapper.PostMapper;
 import com.oldcatlabs.blog.repository.PostRepository;
 import com.oldcatlabs.blog.request.CreatePostRequest;
 import com.oldcatlabs.blog.response.CreatePostResponse;
@@ -27,22 +28,12 @@ public class PostService {
     }
 
     public CreatePostResponse createPost(CreatePostRequest request) {
-        Post post = new Post();
-        post.setTitle(request.getTitle());
-        post.setBody(request.getBody());
-        post.setSlug(request.getSlug());
+        Post post = PostMapper.INSTANCE.fromCreatePostRequest(request);
 
         post.setCreatedAt(Instant.now().getEpochSecond());
         post = postRepository.save(post);
 
-        CreatePostResponse response = new CreatePostResponse();
-        response.setTitle(post.getTitle());
-        response.setBody(post.getBody());
-        response.setSlug(post.getSlug());
-        response.setPublishedAt(post.getCreatedAt());
-        response.setCommentCount(post.getCommentCount());
-
-        return response;
+        return PostMapper.INSTANCE.toCreatePostResponse(post);
     }
 
     public Post updatePostBySlug(String slug, Post post) {
