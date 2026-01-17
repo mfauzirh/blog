@@ -1,6 +1,7 @@
 package com.oldcatlabs.blog.service;
 
 import com.oldcatlabs.blog.entity.Post;
+import com.oldcatlabs.blog.exception.ApiException;
 import com.oldcatlabs.blog.mapper.PostMapper;
 import com.oldcatlabs.blog.repository.PostRepository;
 import com.oldcatlabs.blog.request.CreatePostRequest;
@@ -8,6 +9,7 @@ import com.oldcatlabs.blog.request.UpdatePostRequest;
 import com.oldcatlabs.blog.response.PostResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -28,7 +30,7 @@ public class PostService {
     public PostResponse getPostBySlug(String slug) {
         Post post= postRepository
                 .findFirstBySlugAndIsDeleted(slug, false)
-                .orElse(null);
+                .orElseThrow(() -> new ApiException("post not found", HttpStatus.NOT_FOUND));
 
         return PostMapper.INSTANCE.toPostResponse(post);
     }
