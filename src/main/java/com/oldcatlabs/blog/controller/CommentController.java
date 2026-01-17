@@ -3,6 +3,7 @@ package com.oldcatlabs.blog.controller;
 import com.oldcatlabs.blog.request.CreateCommentRequest;
 import com.oldcatlabs.blog.response.CommentResponse;
 import com.oldcatlabs.blog.service.CommentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +31,7 @@ public class CommentController {
     }
 
     @PostMapping("/posts/{id}/comments")
-    public CommentResponse createComment(@PathVariable Integer id, @RequestBody CreateCommentRequest request) {
+    public CommentResponse createComment(@PathVariable Integer id, @Valid @RequestBody CreateCommentRequest request) {
         return commentService.createComment(id, request);
     }
 

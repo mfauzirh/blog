@@ -1,6 +1,8 @@
 package com.oldcatlabs.blog.exception;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -19,6 +21,18 @@ public class ApiExceptionHandler {
                 .errorMessages(errorMessages)
                 .build();
         return ResponseEntity.status(e.getHttpStatus()).body(response);
+    }
+
+    @SuppressWarnings("unused")
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ApiExceptionResponse> handlerMethodArgumentNotValidException(
+            MethodArgumentNotValidException e) {
+        List<String> errorMessages = new ArrayList<>();
+        e.getFieldErrors().forEach(fieldError -> errorMessages.add(fieldError.getDefaultMessage()));
+        ApiExceptionResponse response = ApiExceptionResponse.builder()
+                .errorMessages(errorMessages)
+                .build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
 }
