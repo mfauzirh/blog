@@ -1,7 +1,9 @@
 package com.oldcatlabs.blog.service;
 
+import com.oldcatlabs.blog.properties.SecretProperties;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +14,14 @@ import java.util.Base64;
 import java.util.HashMap;
 
 @Service
+@RequiredArgsConstructor
 public class JwtService {
+
+    private final SecretProperties secretProperties;
 
     public String generateToken(UserDetails userDetails) {
         var claims = new HashMap<String, String>();
-        claims.put("iss", "https://oldcatlabs.com");
+        claims.put("iss", secretProperties.getJwtIss());
         Instant now = Instant.now();
         return Jwts.builder()
                 .claims(claims)
@@ -28,7 +33,7 @@ public class JwtService {
     }
 
     private SecretKey generateKey() {
-        byte[] decodedKey = Base64.getDecoder().decode("y7t0b7xR9z+0n4Z8y3r7Zx+ZpQk3G6Z9y6qVvPpC5mE=");
+        byte[] decodedKey = Base64.getDecoder().decode(secretProperties.getJwtSecretKey());
         return Keys.hmacShaKeyFor(decodedKey);
     }
 
