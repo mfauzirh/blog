@@ -1,8 +1,8 @@
 package com.oldcatlabs.blog.controller;
 
-import com.oldcatlabs.blog.request.CreatePostRequest;
-import com.oldcatlabs.blog.request.UpdatePostRequest;
-import com.oldcatlabs.blog.response.PostResponse;
+import com.oldcatlabs.blog.request.post.CreatePostRequest;
+import com.oldcatlabs.blog.request.post.UpdatePostRequest;
+import com.oldcatlabs.blog.response.post.PostResponse;
 import com.oldcatlabs.blog.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

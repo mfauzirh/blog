@@ -1,4 +1,4 @@
-package com.oldcatlabs.blog.request;
+package com.oldcatlabs.blog.request.post;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Valid
-public class CreatePostRequest {
+public class UpdatePostRequest {
 
     @NotBlank(message = "title is required")
     @Size(min = 1, max = 100, message = "title must be 1 to 100 characters long")

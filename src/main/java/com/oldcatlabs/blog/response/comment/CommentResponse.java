@@ -1,4 +1,4 @@
-package com.oldcatlabs.blog.response;
+package com.oldcatlabs.blog.response.comment;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

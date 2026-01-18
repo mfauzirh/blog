@@ -1,8 +1,8 @@
     package com.oldcatlabs.blog.mapper;
 
     import com.oldcatlabs.blog.entity.Comment;
-    import com.oldcatlabs.blog.request.CreateCommentRequest;
-    import com.oldcatlabs.blog.response.CommentResponse;
+    import com.oldcatlabs.blog.request.comment.CreateCommentRequest;
+    import com.oldcatlabs.blog.response.comment.CommentResponse;
     import org.mapstruct.Mapper;
     import org.mapstruct.Mapping;
     import org.mapstruct.factory.Mappers;

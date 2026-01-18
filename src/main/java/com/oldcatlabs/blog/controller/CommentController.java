@@ -1,7 +1,7 @@
 package com.oldcatlabs.blog.controller;
 
-import com.oldcatlabs.blog.request.CreateCommentRequest;
-import com.oldcatlabs.blog.response.CommentResponse;
+import com.oldcatlabs.blog.request.comment.CreateCommentRequest;
+import com.oldcatlabs.blog.response.comment.CommentResponse;
 import com.oldcatlabs.blog.service.CommentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.oldcatlabs.blog.request;
+package com.oldcatlabs.blog.request.comment;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
